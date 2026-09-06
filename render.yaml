@@ -1,0 +1,16 @@
+# GoChat — Web Service with a persistent Node process (WebRTC signaling + chat).
+# After the GitHub repo exists: Dashboard → New → Blueprint → this repo.
+
+services:
+  - type: web
+    name: gochat
+    runtime: node
+    region: oregon
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOSTNAME
+        value: 0.0.0.0
