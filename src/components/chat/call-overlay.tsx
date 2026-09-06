@@ -146,11 +146,11 @@ export function CallOverlay({
         })}
       </div>
 
-      <div className="mx-auto mt-2 grid w-full max-w-64 shrink-0 grid-flow-col auto-cols-fr items-center gap-2 px-2 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:mt-4 sm:max-w-72 sm:gap-3">
+      <div className="mt-4 flex items-center justify-center gap-3">
         <Button
           size="icon-lg"
           variant={muted ? "destructive" : "secondary"}
-          className="size-11 justify-self-center rounded-full sm:size-12"
+          className="size-12 rounded-full"
           onClick={onToggleMute}
         >
           {muted ? <MicOff /> : <Mic />}
@@ -160,19 +160,14 @@ export function CallOverlay({
           <Button
             size="icon-lg"
             variant={cameraOff ? "destructive" : "secondary"}
-            className="size-11 justify-self-center rounded-full sm:size-12"
+            className="size-12 rounded-full"
             onClick={onToggleCamera}
           >
             {cameraOff ? <VideoOff /> : <Video />}
             <span className="sr-only">{cameraOff ? "Encender cámara" : "Apagar cámara"}</span>
           </Button>
         ) : null}
-        <Button
-          size="icon-lg"
-          variant="destructive"
-          className="size-11 justify-self-center rounded-full bg-rose-600 text-white hover:bg-rose-500 sm:size-12"
-          onClick={onHangUp}
-        >
+        <Button size="icon-lg" variant="destructive" className="size-12 rounded-full bg-rose-600 text-white hover:bg-rose-500" onClick={onHangUp}>
           <PhoneOff />
           <span className="sr-only">Colgar</span>
         </Button>
