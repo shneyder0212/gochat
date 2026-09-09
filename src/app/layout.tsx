@@ -1,53 +1,28 @@
-import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { AppShell } from "@/components/app-shell";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "GoChat — Chat, archivos y llamadas grupales",
-  description:
-    "Sala de chat en tiempo real con notas de voz, fotos, videos, documentos y llamadas o videollamadas grupales por WebRTC.",
+  title: "GoChat - Web",
+  description: "Aplicación de mensajería instantánea y llamadas estilo WhatsApp",
+  icons: {
+    icon: "/icon.svg", // Asegúrate de tener tu icono de WhatsApp aquí
+  },
 };
 
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 5,
-  userScalable: true,
-  viewportFit: "cover",
-  interactiveWidget: "resizes-content",
-  themeColor: "#111b21",
-};
-
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html
-      lang="es"
-      className={`dark ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "try{if(localStorage.getItem('gochat:senior')==='1')document.documentElement.classList.add('senior')}catch(e){}",
-          }}
-        />
-      </head>
-      <body className="flex h-full flex-col overflow-hidden bg-background text-foreground">
-        <TooltipProvider>
-          <AppShell>{children}</AppShell>
-        </TooltipProvider>
+    <html lang="es">
+      <body className={inter.className}>
+        <main className="h-screen w-screen overflow-hidden bg-background">
+          {children}
+        </main>
       </body>
     </html>
   );
