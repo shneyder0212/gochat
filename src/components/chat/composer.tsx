@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Smile, Paperclip, Mic, Image, Send, FileText, Video } from "lucide-react";
+import { Smile, Paperclip, Mic, Image, Send, FileText } from "lucide-react";
 
 export function Composer({ onSendMessage }: { onSendMessage: (content: string, type: string) => void }) {
   const [message, setMessage] = useState("");
@@ -39,10 +39,10 @@ export function Composer({ onSendMessage }: { onSendMessage: (content: string, t
 
         {showAttachments && (
           <div className="absolute bottom-12 left-0 bg-popover border shadow-lg rounded-lg p-2 flex flex-col gap-2 z-50">
-            <Button variant="ghost" size="sm" className="justify-start gap-2" onClick={() => { /* Lógica fotos */ setShowAttachments(false); }}>
+            <Button variant="ghost" size="sm" className="justify-start gap-2" onClick={() => { onSendMessage("Simulación de Foto/Video", "image"); setShowAttachments(false); }}>
               <Image className="w-4 h-4 text-blue-500" /> Fotos y Videos
             </Button>
-            <Button variant="ghost" size="sm" className="justify-start gap-2" onClick={() => { /* Lógica documentos */ setShowAttachments(false); }}>
+            <Button variant="ghost" size="sm" className="justify-start gap-2" onClick={() => { onSendMessage("Simulación de Documento", "document"); setShowAttachments(false); }}>
               <FileText className="w-4 h-4 text-green-500" /> Documentos
             </Button>
           </div>
@@ -64,7 +64,7 @@ export function Composer({ onSendMessage }: { onSendMessage: (content: string, t
           <Send className="w-4 h-4" />
         </Button>
       ) : (
-        <Button variant="ghost" size="icon" onClick={() => { /* Lógica nota de voz */ }}>
+        <Button variant="ghost" size="icon" onClick={() => onSendMessage("Nota de voz simulada", "audio")}>
           <Mic className="w-5 h-5 text-muted-foreground" />
         </Button>
       )}
