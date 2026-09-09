@@ -14,11 +14,10 @@ export function ChatRoom() {
   const roomId = params.roomId as string;
   const [messages, setMessages] = useState<any[]>([]);
   
-  // Hook de llamadas para gestionar voz y video
   const { callState, startCall, endCall, acceptCall } = useCall();
 
   useEffect(() => {
-    // Escuchar mensajes entrantes del socket
+    if (!roomId) return;
     socket.emit("join-room", roomId);
     
     socket.on("message", (msg) => {
@@ -30,32 +29,29 @@ export function ChatRoom() {
     };
   }, [roomId]);
 
-  // Manejar el envío de diferentes tipos de contenido (texto, multimedia, notas)
   const handleSendMessage = (content: string, type: string = "text") => {
     const messageData = {
       roomId,
       content,
-      type, // 'text', 'image', 'video', 'document', 'audio'
+      type,
       timestamp: new Date().toISOString(),
     };
 
-    // Emitir el mensaje a través del socket
     socket.emit("send-message", messageData);
+    setMessages((prev) => [...prev, messageData]); // Optimistic update local
   };
 
   return (
     <div className="flex flex-col h-full bg-background relative">
-      {/* Cabecera de la sala con botones de Llamada y Videollamada */}
+      {/* Cabecera de la sala */}
       <div className="flex items-center justify-between px-4 py-3 border-b bg-card">
         <div className="flex items-center gap-3">
-          <div className="font-semibold">Sala: {roomId}</div>
+          <div className="font-semibold text-foreground">Sala: {roomId}</div>
         </div>
         <div className="flex items-center gap-2">
-          {/* Botón de llamada normal (audio) */}
           <Button variant="ghost" size="icon" onClick={() => startCall(roomId, "audio")}>
             <Phone className="w-5 h-5 text-muted-foreground hover:text-primary" />
           </Button>
-          {/* Botón de videollamada */}
           <Button variant="ghost" size="icon" onClick={() => startCall(roomId, "video")}>
             <Video className="w-5 h-5 text-muted-foreground hover:text-primary" />
           </Button>
@@ -65,23 +61,22 @@ export function ChatRoom() {
         </div>
       </div>
 
-      {/* Área de mensajes de la sala */}
+      {/* Mensajes */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((msg, index) => (
           <div key={index} className="flex flex-col">
-            <span className="text-sm bg-muted p-3 rounded-lg max-w-[70%]">
-              {msg.type === "text" && msg.content}
-              {msg.type === "image" && <img src={msg.content} alt="Adjunto" className="rounded-md max-w-xs" />}
-              {/* Aquí puedes renderizar documentos, videos o reproductores de audio según msg.type */}
-            </span>
+            <div className="text-sm bg-muted text-foreground p-3 rounded-lg max-w-[70%] shadow-sm">
+              <span className="block text-xs text-muted-foreground mb-1 capitalize">Tipo: {msg.type}</span>
+              {msg.content}
+            </div>
           </div>
         ))}
       </div>
 
-      {/* Componente de entrada de texto, emojis y adjuntos */}
+      {/* Composer */}
       <Composer onSendMessage={handleSendMessage} />
 
-      {/* Interfaz superpuesta para llamadas o videollamadas activas */}
+      {/* Overlay de Llamadas */}
       {callState.isActive && (
         <CallOverlay 
           callState={callState} 
